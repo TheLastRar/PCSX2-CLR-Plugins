@@ -10,7 +10,7 @@ bool ConfigWrapper::Conf_open(System::String^ filename, bool WriteAccess)
 	std::string logname2 = msclr::interop::marshal_as< std::string >(filename);
 	if (WriteAccess)
 	{
-		return Ini->Open(logname2,FileMode::WRITE_FILE);
+		return Ini->Open(logname2, FileMode::WRITE_FILE);
 	}
 	else {
 		return Ini->Open(logname2, FileMode::READ_FILE);
@@ -55,7 +55,7 @@ void ConfigWrapper::ConfigFree()
 	catch (System::Exception^ e)
 	{
 		System::Windows::Forms::MessageBox::Show("WTF? " + e->ToString());
-	}		
+	}
 }
 
 void ConfigWrapper::About()

@@ -115,12 +115,6 @@
     <Compile Include="ConfigForm\CLR_Config.vb" />
     <Compile Include="PSE\CLR_PSE_USB.vb" />
     <Compile Include="USB\Keyboard\API_Keyboard.vb" />
-    <Compile Include="USB\Keyboard\CaptureRawAPI.Designer.vb">
-      <DependentUpon>CaptureRawAPI.vb</DependentUpon>
-    </Compile>
-    <Compile Include="USB\Keyboard\CaptureRawAPI.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="USB\Keyboard\ManagedMessageLoop.Designer.vb">
       <DependentUpon>ManagedMessageLoop.vb</DependentUpon>
     </Compile>
@@ -166,9 +160,6 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="USB\Keyboard\CaptureRawAPI.resx">
-      <DependentUpon>CaptureRawAPI.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="USB\Keyboard\ManagedMessageLoop.resx">
       <DependentUpon>ManagedMessageLoop.vb</DependentUpon>

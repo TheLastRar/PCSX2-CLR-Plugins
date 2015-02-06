@@ -154,10 +154,10 @@ EXPORT_C_(s32) USBopen(void *pDsp)
 		//Error Bad Handle
 		return -1;
 	}
-	
+
 	managedHWND = System::IntPtr(hWnd);
 #endif
-	
+
 	try
 	{
 		return nat_usb->USBwrap->USBopen(managedHWND);
@@ -331,7 +331,7 @@ EXPORT_C_(void) USBsetSettingsDir(const char* dir)
 }
 EXPORT_C_(void) USBsetLogDir(const char* dir)
 {
-		//// Get the path to the log directory.
+	//// Get the path to the log directory.
 	try
 	{
 		EnsureInitialized();
@@ -366,7 +366,7 @@ EXPORT_C_(s32) USBfreeze(int mode, freezeData *data)
 
 EXPORT_C_(void) USBasync(u32 cycles)
 {
-// Optional function: Called in IopCounter.cpp.
+	// Optional function: Called in IopCounter.cpp.
 	nat_usb->USBwrap->USBasync(cycles);
 }
 

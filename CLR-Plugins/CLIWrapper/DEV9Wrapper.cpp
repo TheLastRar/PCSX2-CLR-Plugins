@@ -150,4 +150,3 @@ int DEV9Wrapper::_DEV9irqHandler(void)
 	// deal with it here.
 	return (int)m_DEV9irqHandler->Invoke(cPlugin, nullptr);
 }
-//};
