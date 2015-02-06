@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CLRUSB", "..\CLRUSB\CLRUSB\CLRUSB.vbproj", "{502B3ABF-15FB-44AD-AEE2-0731A736A759}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLIWrapper", "CLIWrapper\CLIWrapper.vcxproj", "{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLRDEV9", "..\CLRDEV9\CLRDEV9\CLRDEV9.csproj", "{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DEV9_Debug|Any CPU = DEV9_Debug|Any CPU
+		DEV9_Debug|Mixed Platforms = DEV9_Debug|Mixed Platforms
+		DEV9_Debug|x64 = DEV9_Debug|x64
+		DEV9_Debug|x86 = DEV9_Debug|x86
+		USB_Debug|Any CPU = USB_Debug|Any CPU
+		USB_Debug|Mixed Platforms = USB_Debug|Mixed Platforms
+		USB_Debug|x64 = USB_Debug|x64
+		USB_Debug|x86 = USB_Debug|x86
+		USB_Release|Any CPU = USB_Release|Any CPU
+		USB_Release|Mixed Platforms = USB_Release|Mixed Platforms
+		USB_Release|x64 = USB_Release|x64
+		USB_Release|x86 = USB_Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|Mixed Platforms.Build.0 = Debug|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|x64.ActiveCfg = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|x86.ActiveCfg = Debug|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.DEV9_Debug|x86.Build.0 = Debug|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|x64.ActiveCfg = Debug|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|x86.ActiveCfg = Debug|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Debug|x86.Build.0 = Debug|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|Any CPU.Build.0 = Release|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|x64.ActiveCfg = Release|Any CPU
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|x86.ActiveCfg = Release|x86
+		{502B3ABF-15FB-44AD-AEE2-0731A736A759}.USB_Release|x86.Build.0 = Release|x86
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.DEV9_Debug|Any CPU.ActiveCfg = DEV9_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.DEV9_Debug|Mixed Platforms.ActiveCfg = DEV9_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.DEV9_Debug|Mixed Platforms.Build.0 = DEV9_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.DEV9_Debug|x64.ActiveCfg = DEV9_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.DEV9_Debug|x86.ActiveCfg = DEV9_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.DEV9_Debug|x86.Build.0 = DEV9_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Debug|Any CPU.ActiveCfg = USB_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Debug|Mixed Platforms.ActiveCfg = USB_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Debug|Mixed Platforms.Build.0 = USB_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Debug|x64.ActiveCfg = USB_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Debug|x86.ActiveCfg = USB_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Debug|x86.Build.0 = USB_Debug|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Release|Any CPU.ActiveCfg = USB_Release|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Release|Mixed Platforms.ActiveCfg = USB_Release|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Release|Mixed Platforms.Build.0 = USB_Release|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Release|x64.ActiveCfg = USB_Release|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Release|x86.ActiveCfg = USB_Release|Win32
+		{33F46F8A-6DD0-4333-9CE6-D8CB2B87C353}.USB_Release|x86.Build.0 = USB_Release|Win32
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|x64.ActiveCfg = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|x86.ActiveCfg = Debug|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.DEV9_Debug|x86.Build.0 = Debug|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|x64.ActiveCfg = Debug|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|x86.ActiveCfg = Debug|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Debug|x86.Build.0 = Debug|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|Any CPU.Build.0 = Release|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|x64.ActiveCfg = Release|Any CPU
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|x86.ActiveCfg = Release|x86
+		{D972A29B-25A1-4AE1-BCAA-B6416AD6F1F0}.USB_Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

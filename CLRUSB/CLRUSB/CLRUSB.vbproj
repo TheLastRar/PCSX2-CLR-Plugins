@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{502B3ABF-15FB-44AD-AEE2-0731A736A759}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CLRUSB</RootNamespace>
+    <AssemblyName>CLRUSB</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>CLRUSB.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>CLRUSB.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>CLRUSB.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>CLRUSB.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>
+    </NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CLR_FreezeData.vb" />
+    <Compile Include="ConfigForm\ComboConfig.vb" />
+    <Compile Include="ConfigForm\ConfigDataKeyboard.vb" />
+    <Compile Include="ConfigForm\DynamicConfigForm.Designer.vb">
+      <DependentUpon>DynamicConfigForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigForm\DynamicConfigForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigForm\IConfigControl.vb" />
+    <Compile Include="ConfigForm\IConfigData.vb" />
+    <Compile Include="ConfigForm\SingleToggle.vb" />
+    <Compile Include="PSE\CLR_PSE_DEV9.vb" />
+    <Compile Include="PSE\CLR_PSE_PluginLog.vb" />
+    <Compile Include="PSE\CLR_PSE_Callbacks.vb" />
+    <Compile Include="PSE\CLR_PSE.vb" />
+    <Compile Include="CLR_USB.vb" />
+    <Compile Include="ConfigForm\CLR_Config.vb" />
+    <Compile Include="PSE\CLR_PSE_USB.vb" />
+    <Compile Include="USB\Keyboard\API_Keyboard.vb" />
+    <Compile Include="USB\Keyboard\CaptureRawAPI.Designer.vb">
+      <DependentUpon>CaptureRawAPI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="USB\Keyboard\CaptureRawAPI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="USB\Keyboard\ManagedMessageLoop.Designer.vb">
+      <DependentUpon>ManagedMessageLoop.vb</DependentUpon>
+    </Compile>
+    <Compile Include="USB\Keyboard\ManagedMessageLoop.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="USB\Keyboard\RAW_Keyboard.vb" />
+    <Compile Include="USB\Keyboard\WM_Keyboard.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OHCI\OHCI_Constants.vb" />
+    <Compile Include="OHCI\OHCI_Port.vb" />
+    <Compile Include="OHCI\OHCI_State.vb" />
+    <Compile Include="OHCI\Data\ohci_ed.vb" />
+    <Compile Include="OHCI\Data\ohci_hcca.vb" />
+    <Compile Include="OHCI\Data\ohci_iso_td.vb" />
+    <Compile Include="OHCI\Data\ohci_td.vb" />
+    <Compile Include="USB\USB_Constants.vb" />
+    <Compile Include="USB\USB_Device.vb" />
+    <Compile Include="USB\USB_Port.vb" />
+    <Compile Include="USB\Keyboard\USB_Keyboard.vb" />
+    <Compile Include="Utils.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConfigForm\DynamicConfigForm.resx">
+      <DependentUpon>DynamicConfigForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="USB\Keyboard\CaptureRawAPI.resx">
+      <DependentUpon>CaptureRawAPI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="USB\Keyboard\ManagedMessageLoop.resx">
+      <DependentUpon>ManagedMessageLoop.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OHCI\Mostly Taken from USBqemu.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

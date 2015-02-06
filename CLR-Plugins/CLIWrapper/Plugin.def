@@ -1,0 +1,52 @@
+; Plugin.def : Declares the module parameters for the DLL.
+
+;LIBRARY      "CLR_Plugin"
+;DESCRIPTION  'CLR Driver'
+
+EXPORTS
+    ; Explicit exports can go here
+	PS2EgetLibType		@2
+	PS2EgetLibName		@3
+	PS2EgetLibVersion2	@4
+
+	USBinit				@5
+	USBshutdown			@6
+	USBopen				@7
+	USBclose			@8
+	USBread8			@9
+	USBread16			@10
+	USBread32			@11
+	USBwrite8			@12
+	USBwrite16			@13
+	USBwrite32			@14
+	USBirqCallback		@15
+	USBirqHandler		@16
+	USBsetRAM			@17
+	USBasync			@18
+	USBconfigure		@19
+	USBtest				@20
+	USBabout			@21
+	USBfreeze			@22
+	USBsetSettingsDir	@23
+	USBsetLogDir		@24
+
+	DEV9init			@25
+	DEV9shutdown		@26
+	DEV9open			@27
+	DEV9close			@28
+	DEV9read8			@29
+	DEV9read16			@30
+	DEV9read32			@31
+	DEV9write8			@32
+	DEV9write16			@33
+	DEV9write32			@34
+	DEV9readDMA8Mem		@35
+	DEV9writeDMA8Mem	@36
+	DEV9irqCallback		@40
+	DEV9irqHandler		@41
+	DEV9configure		@42
+	DEV9test			@43
+	DEV9about			@44
+	; freeze
+	DEV9setSettingsDir	@46
+	DEV9setLogDir		@47

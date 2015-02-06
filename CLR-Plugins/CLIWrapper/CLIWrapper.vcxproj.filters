@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\USB">
+      <UniqueIdentifier>{f48357f8-e75f-401f-bfd0-847022e3b020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\USB">
+      <UniqueIdentifier>{7d75c011-27aa-4c2a-b19d-c30c44ccbd9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DEV9">
+      <UniqueIdentifier>{2840e49d-467e-458b-ba64-5a17b6a93bdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DEV9">
+      <UniqueIdentifier>{a24407c2-a65e-4854-8798-3f1535bf7c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PCSX2">
+      <UniqueIdentifier>{0e6c744b-cb29-4f5c-86bc-06f0db0d8b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSE">
+      <UniqueIdentifier>{da8022d1-9a0c-4908-abfb-0c20375430d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PSE">
+      <UniqueIdentifier>{8bc170a4-c2df-44f4-9042-eefdf7b742ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Config">
+      <UniqueIdentifier>{bbc645c4-82d5-4393-8f67-e06f7a1796f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Config">
+      <UniqueIdentifier>{076b2506-c41d-4044-82f9-fdce10c9dfe9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AssemblyResolve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="USBinterface.h">
+      <Filter>Header Files\USB</Filter>
+    </ClInclude>
+    <ClInclude Include="USBWrapper.h">
+      <Filter>Header Files\USB</Filter>
+    </ClInclude>
+    <ClInclude Include="Pcsx2Defs.h">
+      <Filter>Header Files\PCSX2</Filter>
+    </ClInclude>
+    <ClInclude Include="Pcsx2Types.h">
+      <Filter>Header Files\PCSX2</Filter>
+    </ClInclude>
+    <ClInclude Include="PS2Edefs.h">
+      <Filter>Header Files\PCSX2</Filter>
+    </ClInclude>
+    <ClInclude Include="PS2Eext.h">
+      <Filter>Header Files\PCSX2</Filter>
+    </ClInclude>
+    <ClInclude Include="PSEInterface.h">
+      <Filter>Header Files\PSE</Filter>
+    </ClInclude>
+    <ClInclude Include="PSEWrapper.h">
+      <Filter>Header Files\PSE</Filter>
+    </ClInclude>
+    <ClInclude Include="DEV9Interface.h">
+      <Filter>Header Files\DEV9</Filter>
+    </ClInclude>
+    <ClInclude Include="DEV9Wrapper.h">
+      <Filter>Header Files\DEV9</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigWrapper.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyResolve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="USBWrap.cpp">
+      <Filter>Source Files\USB</Filter>
+    </ClCompile>
+    <ClCompile Include="DEV9Interface.cpp">
+      <Filter>Source Files\DEV9</Filter>
+    </ClCompile>
+    <ClCompile Include="USBInterface.cpp">
+      <Filter>Source Files\USB</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DEV9Wrapper.cpp">
+      <Filter>Source Files\DEV9</Filter>
+    </ClCompile>
+    <ClCompile Include="PSEWrap.cpp">
+      <Filter>Source Files\PSE</Filter>
+    </ClCompile>
+    <ClCompile Include="PSEinterface.cpp">
+      <Filter>Source Files\PSE</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigWrap.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CLRPLUGIN.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Plugin.def">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
