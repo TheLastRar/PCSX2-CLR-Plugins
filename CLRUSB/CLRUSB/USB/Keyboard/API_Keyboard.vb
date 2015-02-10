@@ -12,6 +12,7 @@ Namespace USB.Keyboard
             bufferSize As Integer, flags As UInteger) As Integer
         End Function
 
+
         '<DllImport("User32.dll", CharSet:=CharSet.Auto, CallingConvention:=CallingConvention.StdCall)> _
         'Public Overloads Shared Function GetAsyncKeyState(ByVal vkey As Integer) As Short
         'End Function

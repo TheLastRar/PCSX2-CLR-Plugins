@@ -1,14 +1,14 @@
 ﻿Imports System.Runtime.InteropServices
+Imports CLRUSB.USB.Keyboard
 
-Public Class ManagedMessageLoop
-    Public Delegate Function WndProcDelegate(ByVal hwnd As IntPtr, ByVal msg As UInteger, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
-    Public WndProcHook As WndProcDelegate
+Class ManagedMessageLoop
+    Public WndProcHook As RAW_Keyboard.SubClassProcDelegate
 
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
-        WndProcHook = New WndProcDelegate(AddressOf DoNothing)
+        WndProcHook = New RAW_Keyboard.SubClassProcDelegate(AddressOf DoNothing)
     End Sub
 
     Protected Function DoNothing(ByVal hwnd As IntPtr, ByVal msg As UInteger, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
