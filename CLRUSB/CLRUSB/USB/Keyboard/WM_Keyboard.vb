@@ -47,7 +47,6 @@ Namespace USB.Keyboard
 
         'Protected Const LOAD_LIBRARY_AS_DATAFILE As Integer = 2
         Protected Const WH_KEYBOARD_LL As Integer = 13
-
         Protected Const HC_ACTION As Integer = 0
 
         Private WM_KEYDOWN As ULong = (&H100)
@@ -57,10 +56,10 @@ Namespace USB.Keyboard
 
         Private Delegate Function KBDLLHookProc(ByVal nCode As Integer, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
 
-        Private KBDLLHookProcDelegate As KBDLLHookProc = New KBDLLHookProc(AddressOf KeyboardProc)
+        Private KBDLLHookProcDelegate As KBDLLHookProc = New KBDLLHookProc(AddressOf KeyboardHookProc)
         Private HHookID As IntPtr = IntPtr.Zero
 
-        Protected Overridable Function KeyboardProc(ByVal nCode As Integer, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
+        Protected Function KeyboardHookProc(ByVal nCode As Integer, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
             If (nCode = HC_ACTION) Then
                 Dim struct As KBDLLHOOKSTRUCT
                 Select Case wParam.ToUInt64
@@ -77,7 +76,6 @@ Namespace USB.Keyboard
 
         Public Sub New(_hWnd As IntPtr)
             MyBase.New(_hWnd)
-
             'http://stackoverflow.com/a/17898148
             ''SetWindowsHookEx() is a bit awkward for the low-level hooks. It requires a valid module handle, and
             ''checks it, but doesn't actually use it. This got fixed in Windows, somewhere around Win7 SP1.
@@ -107,6 +105,5 @@ Namespace USB.Keyboard
                 HHookID = IntPtr.Zero
             End If
         End Sub
-
     End Class
 End Namespace

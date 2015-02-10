@@ -32,7 +32,7 @@ namespace CLRDEV9.PacketReader
             }
         }
         bool _fragmented;
-        UInt16 _fragmentOffset;
+        //UInt16 _fragmentOffset;
         byte ttl = 128;
         public byte Protocol;
         Int16 NO_csum;

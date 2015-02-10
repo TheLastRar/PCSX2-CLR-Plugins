@@ -36,7 +36,6 @@ namespace CLRDEV9
             //myKey.SetValue("HddSize", DEV9Header.config.HddSize);
             //myKey.SetValue("ethEnable", DEV9Header.config.ethEnable);
             //myKey.SetValue("hddEnable", DEV9Header.config.hddEnable);
-
             //myKey.Close();
         }
 
@@ -56,6 +55,7 @@ namespace CLRDEV9
             //DEV9Header.config.Hdd = (string)myKey.GetValue("Hdd", DEV9Header.config.Hdd);
             //DEV9Header.config.HddSize = (int)myKey.GetValue("HddSize", DEV9Header.config.HddSize);
             //DEV9Header.config.ethEnable = (int)myKey.GetValue("ethEnable", DEV9Header.config.ethEnable);
+            DEV9Header.config.ethEnable = 1;
             //DEV9Header.config.hddEnable = (int)myKey.GetValue("hddEnable", DEV9Header.config.hddEnable);
 
             //myKey.Close();

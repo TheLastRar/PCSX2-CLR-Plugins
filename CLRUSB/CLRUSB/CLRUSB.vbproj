@@ -121,6 +121,7 @@
     <Compile Include="USB\Keyboard\ManagedMessageLoop.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="USB\Keyboard\ManagedMessageLoopManager.vb" />
     <Compile Include="USB\Keyboard\RAW_Keyboard.vb" />
     <Compile Include="USB\Keyboard\WM_Keyboard.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

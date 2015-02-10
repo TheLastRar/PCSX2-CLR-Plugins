@@ -30,9 +30,7 @@ Partial Class ManagedMessageLoop
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 262)
         Me.Name = "ManagedMessageLoop"
-        Me.Opacity = 0.0R
         Me.Text = "ManagedMessageLoop"
-        Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
         Me.ResumeLayout(False)
 
     End Sub

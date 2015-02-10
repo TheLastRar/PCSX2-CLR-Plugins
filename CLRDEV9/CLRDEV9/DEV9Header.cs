@@ -16,8 +16,8 @@ namespace CLRDEV9
             public string Hdd;
             public int HddSize;
 
-            public int hddEnable;
-            public int ethEnable = 1;
+            //public int hddEnable;
+            public int ethEnable;
         }
 
         public static Config config;

@@ -372,7 +372,7 @@ Namespace USB.Keyboard
             Loop Until endBeat
         End Sub
 
-        Public Delegate Function SubClassProcDelegate(ByVal hwnd As IntPtr, ByVal msg As UInteger, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
+        'Public Delegate Function SubClassProcDelegate(ByVal hwnd As IntPtr, ByVal msg As UInteger, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
         Protected Function GSWndProc(ByVal _hWnd As IntPtr, ByVal msg As UInteger, ByVal wParam As UIntPtr, ByVal lParam As IntPtr) As IntPtr
             If rAPI_hWnd <> _hWnd Then
                 Console.Error.WriteLine("Mismatched window handles")
@@ -554,7 +554,7 @@ Namespace USB.Keyboard
         End Function
 
         Private Sub GSSubClassHook()
-            Dim newGSWndProc As SubClassProcDelegate = New SubClassProcDelegate(AddressOf GSWndProc)
+            Dim newGSWndProc As ManagedMessageLoop.WndProcDelegate = New ManagedMessageLoop.WndProcDelegate(AddressOf GSWndProc) 'SubClassProcDelegate = New SubClassProcDelegate(AddressOf GSWndProc)
             myGSWndProcHandle = GCHandle.Alloc(newGSWndProc) 'Prevent GC
             Dim GSfp As IntPtr = Marshal.GetFunctionPointerForDelegate(newGSWndProc)
             eatenGSWndProcPointer = SubClassHook(rAPI_hWnd, GSfp)
