@@ -52,6 +52,7 @@ namespace CLRDEV9
             //    SaveConf(); return;
             //}
             //DEV9Header.config.Eth = (string)myKey.GetValue("Eth", DEV9Header.config.Eth);
+            DEV9Header.config.Eth = "winsock";
             //DEV9Header.config.Hdd = (string)myKey.GetValue("Hdd", DEV9Header.config.Hdd);
             //DEV9Header.config.HddSize = (int)myKey.GetValue("HddSize", DEV9Header.config.HddSize);
             //DEV9Header.config.ethEnable = (int)myKey.GetValue("ethEnable", DEV9Header.config.ethEnable);

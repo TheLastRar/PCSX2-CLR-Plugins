@@ -22,9 +22,12 @@ namespace CLRDEV9
 	        }
 	        else if (DEV9Header.config.Eth.StartsWith("t"))
 	        {
-		        //return new tap.TAPAdapter();
-                return new Winsock();
+		        return new tap.TAPAdapter();
 	        }
+            else if (DEV9Header.config.Eth.StartsWith("w"))
+            {
+                return new Winsock();
+            }
 	        else
 		        return null;
         }
