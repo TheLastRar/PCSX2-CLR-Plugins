@@ -13,6 +13,7 @@ namespace CLRDEV9
         const bool DoLog = false;
         private void LogInit()
         {
+#pragma warning disable 0162
             if (DoLog)
             {
                 if (LogFolderPath.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
@@ -26,9 +27,11 @@ namespace CLRDEV9
                 PluginLog.SetWriteToFile(true);
                 DEVLOG_shared = PluginLog;
             }
+#pragma warning restore 0162
         }
         public static void DEV9_LOG(string basestr)
         {
+#pragma warning disable 0162
             if (DoLog)
             {
                 int i = 0;
@@ -38,6 +41,7 @@ namespace CLRDEV9
                 }
                 DEVLOG_shared.LogWriteLine("[IOP PC = " + i.ToString("X8") + "] " + basestr);
             }
+#pragma warning restore 0162
         }
 
         byte[] eeprom = {

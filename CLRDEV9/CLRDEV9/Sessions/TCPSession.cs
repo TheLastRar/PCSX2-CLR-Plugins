@@ -14,6 +14,7 @@ namespace CLRDEV9.Sessions
         private enum TCPState
         {
             None,
+            SendingSYN_ACK,
             SentSYN_ACK,
             Connected,
             ConnectionClosedByPS2,
@@ -73,7 +74,7 @@ namespace CLRDEV9.Sessions
                 int avaData = client.Available;
                 if (avaData > (MaxSegmentSize-16))
                 {
-                    Console.Error.WriteLine("TOO MUCH DATA");
+                    Console.Error.WriteLine("Got a lot of data");
                     avaData = MaxSegmentSize-16;
                 }
 
@@ -108,6 +109,60 @@ namespace CLRDEV9.Sessions
 
             return null;
         }
+
+        private void AsyncConnectComplete(IAsyncResult res)
+        {
+            TCP tcp = (TCP)res.AsyncState;
+            try
+            {
+                client.EndConnect(res);
+            }
+            catch (System.Net.Sockets.SocketException err)
+            {
+                Console.Error.WriteLine("TCP Connection Error: " + err.Message);
+                Console.Error.WriteLine("ErrorCode: " + err.ErrorCode);
+            }
+            client.NoDelay = true;
+            lock (sentry)
+            {
+                if (client.Connected)
+                {
+                    open = true;
+                    state = TCPState.SentSYN_ACK;
+                    byte[] emptyByte = new byte[0];
+                    TCP ret = new TCP(emptyByte);
+                    //Return the fact we connected
+                    ret.SourcePort = tcp.DestinationPort;
+                    ret.DestinationPort = tcp.SourcePort;
+
+                    ret.SequenceNumber = MySequenceNumber;
+                    MySequenceNumber += 1;
+                    ret.AcknowledgementNumber = ExpectedSequenceNumber;
+
+                    ret.SYN = true;
+                    ret.ACK = true;
+                    ret.WindowSize = 16 * 1024;
+                    ret.Options.Add(new TCPopMSS(MaxSegmentSize));
+
+                    ret.Options.Add(new TCPopNOP());
+                    ret.Options.Add(new TCPopWS(0));
+
+                    if (SendTimeStamps)
+                    {
+                        ret.Options.Add(new TCPopNOP());
+                        ret.Options.Add(new TCPopNOP());
+                        ret.Options.Add(new TCPopTS((UInt32)TimeStamp.Elapsed.Seconds, LastRecivedTimeStamp));
+                    }
+                    recvbuff.Add(ret);
+                }
+                else
+                {
+                    open = false;
+                    state = TCPState.None;
+                }
+            }
+        }
+
         public override bool send(IPPayload payload)
         {
             TCP tcp = (TCP)payload;
@@ -144,22 +199,17 @@ namespace CLRDEV9.Sessions
                     {
                         switch (tcp.Options[i].Code)
                         {
-                            case 0:
-                                //Console.Error.WriteLine("Got END");
+                            case 0: //End
+                            case 1: //Nop
                                 continue;
-                            case 1:
-                                //Console.Error.WriteLine("Got NOP");
-                                continue;
-                            case 2:
-                                //Console.Error.WriteLine("Got MSS");
+                            case 2: //MSS
                                 MaxSegmentSize = ((TCPopMSS)(tcp.Options[i])).MaxSegmentSize;
                                 break;
-                            case 3:
+                            case 3: //WinScale
                                 //Console.Error.WriteLine("Got WinScale");
                                 // = ((TCPopWS)(tcp.Options[i])).WindowScale;
                                 break;
-                            case 8:
-                                //Console.Error.WriteLine("Got TimeStamp");
+                            case 8: //TimeStamp
                                 LastRecivedTimeStamp = ((TCPopTS)(tcp.Options[i])).SenderTimeStamp;
                                 SendTimeStamps = true;
                                 TimeStamp.Start();
@@ -173,44 +223,13 @@ namespace CLRDEV9.Sessions
 
                     client = new TcpClient();
                     IPAddress address = new IPAddress(DestIP);
-                    client.Connect(address, DestPort); //address to send to
-                    client.NoDelay = true;
-                    if (client.Connected)
-                    {
-                        open = true;
-                        state = TCPState.SentSYN_ACK;
-                        byte[] emptyByte = new byte[0];
-                        TCP ret = new TCP(emptyByte);
-                        //and now to setup THE ENTIRE THING
-                        ret.SourcePort = tcp.DestinationPort;
-                        ret.DestinationPort = tcp.SourcePort;
-
-                        ret.SequenceNumber = MySequenceNumber;
-                        MySequenceNumber += 1;
-                        ret.AcknowledgementNumber = ExpectedSequenceNumber;
-
-                        ret.SYN = true;
-                        ret.ACK = true;
-                        ret.WindowSize = 16 * 1024;
-                        ret.Options.Add(new TCPopMSS(MaxSegmentSize));
-
-                        ret.Options.Add(new TCPopNOP());
-                        ret.Options.Add(new TCPopWS(0));
-
-                        if (SendTimeStamps)
-                        {
-                            ret.Options.Add(new TCPopNOP());
-                            ret.Options.Add(new TCPopNOP());
-                            ret.Options.Add(new TCPopTS((UInt32)TimeStamp.Elapsed.Seconds, LastRecivedTimeStamp));
-                        }
-                        recvbuff.Add(ret);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    client.BeginConnect(address, DestPort, new AsyncCallback(AsyncConnectComplete), tcp);
+                    state = TCPState.SendingSYN_ACK;
+                    open = true;
+                    return true;
                     #endregion
+                case TCPState.SendingSYN_ACK:
+                    return true; //Ignore reconnect attempts while we are still attempting connection
                 case TCPState.SentSYN_ACK:
                     #region "Syn-Ack"
                     lock (sentry)
@@ -226,14 +245,10 @@ namespace CLRDEV9.Sessions
                         {
                             switch (tcp.Options[i].Code)
                             {
-                                case 0:
-                                    //Console.Error.WriteLine("Got END");
+                                case 0: //End
+                                case 1: //Nop
                                     continue;
-                                case 1:
-                                    //Console.Error.WriteLine("Got NOP");
-                                    continue;
-                                case 8:
-                                    //Console.Error.WriteLine("Got TimeStamp");
+                                case 8: //Timestamp
                                     LastRecivedTimeStamp = ((TCPopTS)(tcp.Options[i])).SenderTimeStamp;
                                     break;
                                 default:
@@ -259,11 +274,8 @@ namespace CLRDEV9.Sessions
                         {
                             switch (tcp.Options[i].Code)
                             {
-                                case 0:
-                                    //Console.Error.WriteLine("Got END");
-                                    continue;
-                                case 1:
-                                    //Console.Error.WriteLine("Got NOP");
+                                case 0://End
+                                case 1://Nop
                                     continue;
                                 case 8:
                                     //Console.Error.WriteLine("Got TimeStamp");
