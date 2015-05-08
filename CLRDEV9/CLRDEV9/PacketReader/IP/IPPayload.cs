@@ -9,6 +9,7 @@ namespace CLRDEV9.PacketReader
     {
         abstract public byte[] GetPayload();
         abstract public void CalculateCheckSum(byte[] srcIP, byte[] dstIP);
+        abstract public bool VerifyCheckSum(byte[] srcIP, byte[] dstIP);
         abstract public byte[] GetBytes();
         abstract public byte Protocol
         {

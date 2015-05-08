@@ -79,7 +79,7 @@ namespace CLRDEV9.PacketReader
 
             Checksum = IPPacket.InternetChecksum(headerSegment);
         }
-        public bool VerifyCheckSum(byte[] srcIP, byte[] dstIP)
+        public override bool VerifyCheckSum(byte[] srcIP, byte[] dstIP)
         {
             int pHeaderLen = ((Length));
             if ((pHeaderLen & 1) != 0)
@@ -92,7 +92,7 @@ namespace CLRDEV9.PacketReader
             Utils.memcpy(ref headerSegment, 0, GetBytes(), 0, Length);
 
             UInt16 CsumCal = IPPacket.InternetChecksum(headerSegment);
-            Console.Error.WriteLine("IMCP Checksum Good = " + (CsumCal == 0));
+            //Console.Error.WriteLine("IMCP Checksum Good = " + (CsumCal == 0));
             return (CsumCal == 0);
         }
         public override byte[] GetBytes()

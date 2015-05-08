@@ -128,6 +128,14 @@ namespace CLRDEV9
                 case (int)EtherFrameType.IPv4:
                     //Console.Error.WriteLine("IPv4");
                     IPPacket ippkt = ((IPPacket)ef.Payload);
+                    if (ippkt.VerifyCheckSum() == false)
+                    {
+                        Console.Error.WriteLine("IP packet with bad CSUM");
+                    }
+                    if (ippkt.Payload.VerifyCheckSum(ippkt.SourceIP, ippkt.DestinationIP) == false)
+                    {
+                        Console.Error.WriteLine("IP packet with bad Payload CSUM");
+                    }
 
                     string Key = (ippkt.DestinationIP[0]) + "." + (ippkt.DestinationIP[1]) + "." + (ippkt.DestinationIP[2]) + "." + ((UInt64)ippkt.DestinationIP[3])
                         + "-" + (ippkt.Protocol);

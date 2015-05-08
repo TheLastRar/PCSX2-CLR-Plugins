@@ -8,9 +8,9 @@ namespace CLRDEV9.PacketReader
 {
     class IPPacket : EthernetPayload //IPv4 Only
     {
-        //int _offset;
         const byte _verHi = 4<<4; //Assume it is always 4
         int hlen; //convert this back to num of 32bit words
+        byte typeofservice; //TODO, Implement this
         Int16 NO_Length;
         public override UInt16 Length
         {
@@ -31,8 +31,46 @@ namespace CLRDEV9.PacketReader
                 return (UInt16)IPAddress.NetworkToHostOrder(NO_id);
             }
         }
-        bool _fragmented;
-        //UInt16 _fragmentOffset;
+        Int16 NO_fragmented_flags;
+        #region "Fragment"
+        protected Int16 HostO_fragment_flags
+        {
+            get
+            {
+                return IPAddress.NetworkToHostOrder(NO_fragmented_flags);
+            }
+            set
+            {
+                NO_fragmented_flags = IPAddress.HostToNetworkOrder(value);
+            }
+        }
+        public UInt16 FragmentOffset
+        {
+            get
+            {
+                return (UInt16)(HostO_fragment_flags & ~(0x7 << 13));
+            }
+        }
+        //1st bit is reserved
+        public bool MoreFragments
+        {
+            get { return ((HostO_fragment_flags & (1 << 15)) != 0); }
+            set
+            {
+                if (value) { HostO_fragment_flags |= unchecked((Int16)(1 << 15)); }
+                else { HostO_fragment_flags &= unchecked((Int16)(~(1 << 15))); }
+            }
+        }
+        public bool DoNotFragment
+        {
+            get { return ((HostO_fragment_flags & (1 << 14)) != 0); }
+            set
+            {
+                if (value) { HostO_fragment_flags |= (1 << 14); }
+                else { HostO_fragment_flags &= unchecked((byte)(~(1 << 14))); }
+            }
+        }
+        #endregion
         byte ttl = 128;
         public byte Protocol;
         Int16 NO_csum;
@@ -61,16 +99,16 @@ namespace CLRDEV9.PacketReader
         public override byte[] GetBytes
         {
             get {
-                calculateCheckSum();
+                CalculateCheckSum();
                 _pl.CalculateCheckSum(SourceIP, DestinationIP);
 
                 byte[] ret = new byte[Length];
                 ret[0] = (byte)(_verHi + (hlen >> 2));
-                //DSCP/ECN
+                ret[1] = typeofservice;//DSCP/ECN
                 Utils.memcpy(ref ret, 2, BitConverter.GetBytes(NO_Length), 0, 2);
 
                 Utils.memcpy(ref ret, 4, BitConverter.GetBytes(NO_id), 0, 2);
-                //fragment flags skipped
+                Utils.memcpy(ref ret, 6, BitConverter.GetBytes(NO_fragmented_flags), 0, 2);
 
                 ret[8] = ttl;
                 ret[9] = Protocol;
@@ -100,21 +138,17 @@ namespace CLRDEV9.PacketReader
             //Bits 0-31
             byte v_hl = Ef.RawPacket.buffer[pktoffset];
             hlen = ((v_hl & 0xF) << 2);
+            typeofservice = Ef.RawPacket.buffer[pktoffset + 1]; //TODO, Implement this
             NO_Length = (BitConverter.ToInt16(Ef.RawPacket.buffer, pktoffset + 2));
             //Console.Error.WriteLine("len=" + Length); //Includes hlen
 
             //Bits 32-63
             NO_id = (BitConverter.ToInt16(Ef.RawPacket.buffer, pktoffset + 4)); //Send packets with unique IDs
-            UInt16 frag = BitConverter.ToUInt16(Ef.RawPacket.buffer, pktoffset + 6);
-            _fragmented = (((1 << 13) & frag)!=0);
-            if (_fragmented)
+            NO_fragmented_flags = BitConverter.ToInt16(Ef.RawPacket.buffer, pktoffset + 6);
+
+            if (MoreFragments)
             {
                 Console.Error.WriteLine("FragmentedPacket");
-            }
-            _fragmented = (((1 << 15) & frag) != 0);
-            if (_fragmented)
-            {
-                Console.Error.WriteLine("FragmentedPacket But not detected correctly");
             }
 
             //Bits 64-95
@@ -156,30 +190,43 @@ namespace CLRDEV9.PacketReader
                     //break;
             }
         }
-        private void calculateCheckSum()
+        private void CalculateCheckSum()
         {
             //if (!(i == 5)) //checksum feild is 10-11th byte (5th short), which is skipped
             byte[] headerSegment = new byte[hlen];
             headerSegment[0] = (byte)(_verHi + (hlen >> 2));
-            //DSCP/ECN
+            headerSegment[1] = typeofservice;//DSCP/ECN
             Utils.memcpy(ref headerSegment, 2, BitConverter.GetBytes(NO_Length), 0, 2);
 
             Utils.memcpy(ref headerSegment, 4, BitConverter.GetBytes(NO_id), 0, 2);
-            //fragment flags skipped
+            Utils.memcpy(ref headerSegment, 6, BitConverter.GetBytes(NO_fragmented_flags), 0, 2);
 
             headerSegment[8] = ttl;
             headerSegment[9] = Protocol;
-            //hader csum
+            //header csum
 
             Utils.memcpy(ref headerSegment, 12, SourceIP, 0, 4);
             Utils.memcpy(ref headerSegment, 16, DestinationIP, 0, 4);
 
             Checksum = InternetChecksum(headerSegment);
         }
-        private bool verifyCheckSum(byte[] header, int offset)
+        public bool VerifyCheckSum()
         {
             byte[] headerSegment = new byte[hlen];
-            Utils.memcpy(ref headerSegment, 0, header, offset, hlen);
+            headerSegment[0] = (byte)(_verHi + (hlen >> 2));
+            headerSegment[1] = typeofservice;//DSCP/ECN
+            Utils.memcpy(ref headerSegment, 2, BitConverter.GetBytes(NO_Length), 0, 2);
+
+            Utils.memcpy(ref headerSegment, 4, BitConverter.GetBytes(NO_id), 0, 2);
+            Utils.memcpy(ref headerSegment, 6, BitConverter.GetBytes(NO_fragmented_flags), 0, 2);
+
+            headerSegment[8] = ttl;
+            headerSegment[9] = Protocol;
+            Utils.memcpy(ref headerSegment, 10, BitConverter.GetBytes(NO_csum), 0, 2);
+
+            Utils.memcpy(ref headerSegment, 12, SourceIP, 0, 4);
+            Utils.memcpy(ref headerSegment, 16, DestinationIP, 0, 4);
+
             UInt16 CsumCal = InternetChecksum(headerSegment);
             return (CsumCal == 0);
         }
