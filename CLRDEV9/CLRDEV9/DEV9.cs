@@ -567,6 +567,11 @@ namespace CLRDEV9
             DEV9Header.DEV9irq = callback;
         }
 
+        public override void DEV9async(uint cycles)
+        {
+            smap.smap_async(cycles);
+        }
+
         public override int Test()
         {
             return 0;

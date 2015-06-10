@@ -24,6 +24,7 @@ private:
 	System::Reflection::MethodInfo^ mDEV9irqCallback;
 	System::Reflection::MethodInfo^ m_DEV9irqHandler;
 	//non _ version
+	System::Reflection::MethodInfo^ mDEV9async;
 	System::Reflection::MethodInfo^ mDEV9readDMA8Mem;
 	System::Reflection::MethodInfo^ mDEV9writeDMA8Mem;
 
@@ -48,6 +49,7 @@ public:
 	void DEV9writeDMA8Mem(u32 *pMem, int size);
 
 	void DEV9irqCallback(DEV9callback callback);
+	void DEV9async(u32 cycles);
 
 	DEV9handler DEV9irqHandler(void);
 	int _DEV9irqHandler(void);

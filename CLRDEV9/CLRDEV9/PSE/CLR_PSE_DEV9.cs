@@ -22,6 +22,7 @@ namespace PSE
         public abstract void DEV9writeDMA8Mem(System.IO.UnmanagedMemoryStream addr, int size);
         public abstract void DEV9irqCallback(CLR_PSE_Callbacks.CLR_CyclesCallback callback);
         public abstract Int32 _DEV9irqHandler();
+        public abstract void DEV9async(UInt32 cycles);
 
     }
 }

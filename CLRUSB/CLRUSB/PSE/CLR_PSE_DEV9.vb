@@ -16,6 +16,7 @@
         Public MustOverride Sub DEV9writeDMA8Mem(addr As IO.UnmanagedMemoryStream, size As Integer)
         Public MustOverride Sub DEV9irqCallback(callback As CLR_PSE_Callbacks.CLR_CyclesCallback)
         Public MustOverride Function _DEV9irqHandler() As Int32
+        Public MustOverride Sub DEV9async(cycles As UInt32)
 
     End Class
 End Namespace

@@ -8,6 +8,9 @@ namespace CLRDEV9
     static class smap
     {
         static bool has_link = true;
+        volatile static bool fireIntR = false;
+        static Object reset_sentry = new Object();
+        static Object counter_sentry = new Object();
         //this can return a false positive, but its not problem since it may say it cant recv while it can (no harm done, just delay on packets)
         public static bool rx_fifo_can_rx()
         {
@@ -31,7 +34,6 @@ namespace CLRDEV9
             //we can recv a packet !
             return true;
         }
-
         public static void rx_process(ref netHeader.NetPacket pk)
         {
             if (!rx_fifo_can_rx())
@@ -59,25 +61,31 @@ namespace CLRDEV9
                 DEV9Header.dev9_rxfifo_write(pk.buffer[i++]);
                 DEV9Header.dev9.rxfifo_wr_ptr &= 16383;
             }
-
-            //increase RXBD
-            DEV9Header.dev9.rxbdi++;
-            DEV9Header.dev9.rxbdi &= (uint)((DEV9Header.SMAP_BD_SIZE / 8) - 1);
-
-            //Fill the BD with info !
-            pbd.length = (ushort)pk.size;
-            pbd.pointer = (ushort)(0x4000 + pstart);
-            unchecked //Allow -int to uint
+            lock (reset_sentry)
             {
-                pbd.ctrl_stat &= (ushort)~DEV9Header.SMAP_BD_RX_EMPTY;
-            }
+                //increase RXBD
+                DEV9Header.dev9.rxbdi++;
+                DEV9Header.dev9.rxbdi &= (uint)((DEV9Header.SMAP_BD_SIZE / 8) - 1);
 
-            //increase frame count
-            byte framecount = DEV9Header.dev9Ru8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT);
-            framecount++;
-            DEV9Header.dev9Wu8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT, framecount);
+                //Fill the BD with info !
+                pbd.length = (ushort)pk.size;
+                pbd.pointer = (ushort)(0x4000 + pstart);
+                unchecked //Allow -int to uint
+                {
+                    pbd.ctrl_stat &= (ushort)~DEV9Header.SMAP_BD_RX_EMPTY;
+                }
+
+                //increase frame count
+                lock (counter_sentry)
+                {
+                    byte framecount = DEV9Header.dev9Ru8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT);
+                    framecount++;
+                    DEV9Header.dev9Wu8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT, framecount);
+                }
+            }
             //spams// emu_printf("Got packet, %d bytes (%d fifo)\n", pk->size,bytes);
-            DEV9._DEV9irq(DEV9Header.SMAP_INTR_RXEND, 0);//now ? or when the fifo is full ? i guess now atm
+            fireIntR = true;
+            //DEV9._DEV9irq(DEV9Header.SMAP_INTR_RXEND, 0);//now ? or when the fifo is full ? i guess now atm
             //note that this _is_ wrong since the IOP interrupt system is not thread safe.. but nothing i can do about that
         }
 
@@ -442,9 +450,12 @@ namespace CLRDEV9
 
                 case DEV9Header.SMAP_R_RXFIFO_FRAME_DEC:
                     DEV9.DEV9_LOG("SMAP_R_RXFIFO_FRAME_DEC 8bit write " + value);
-                    DEV9Header.dev9Wu8((int)addr, value); //yes this is a write
+                    lock (counter_sentry)
                     {
-                        DEV9Header.dev9Wu8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT, (byte)(DEV9Header.dev9Ru8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT) - 1));
+                        DEV9Header.dev9Wu8((int)addr, value); //yes this is a write
+                        {
+                            DEV9Header.dev9Wu8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT, (byte)(DEV9Header.dev9Ru8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT) - 1));
+                        }
                     }
                     return;
 
@@ -469,11 +480,17 @@ namespace CLRDEV9
                     DEV9.DEV9_LOG("SMAP_R_RXFIFO_CTRL 8bit write " + value.ToString("X"));
                     if ((value & DEV9Header.SMAP_RXFIFO_RESET) != 0)
                     {
-                        DEV9Header.dev9.rxbdi = 0;
-                        DEV9Header.dev9.rxfifo_wr_ptr = 0;
-                        DEV9Header.dev9Wu8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT, 0);
-                        DEV9Header.dev9Wu32((int)DEV9Header.SMAP_R_RXFIFO_RD_PTR, 0);
-                        DEV9Header.dev9Wu32((int)DEV9Header.SMAP_R_RXFIFO_SIZE, 16384);
+                        lock (reset_sentry)
+                        {
+                            lock (counter_sentry)
+                            {
+                                DEV9Header.dev9.rxbdi = 0;
+                                DEV9Header.dev9.rxfifo_wr_ptr = 0;
+                                DEV9Header.dev9Wu8((int)DEV9Header.SMAP_R_RXFIFO_FRAME_CNT, 0);
+                                DEV9Header.dev9Wu32((int)DEV9Header.SMAP_R_RXFIFO_RD_PTR, 0);
+                                DEV9Header.dev9Wu32((int)DEV9Header.SMAP_R_RXFIFO_SIZE, 16384);
+                            }
+                        }
                     }
                     unchecked
                     {
@@ -719,6 +736,15 @@ namespace CLRDEV9
 
                 DEV9Header.dev9Wu16((int)DEV9Header.SMAP_R_TXFIFO_CTRL, (UInt16)(DEV9Header.dev9Ru16((int)DEV9Header.SMAP_R_TXFIFO_CTRL) & ~DEV9Header.SMAP_TXFIFO_DMAEN));
 
+            }
+        }
+        public static void smap_async(UInt32 cycles)
+        {
+            if (fireIntR)
+            {
+                fireIntR = false;
+                //Is this used to signal each individual packet, or just when there are packets in the RX fifo?
+                DEV9._DEV9irq(DEV9Header.SMAP_INTR_RXEND, 0); //Make the call to _DEV9irq in a thread safe way
             }
         }
     }

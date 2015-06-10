@@ -47,6 +47,7 @@ DEV9Wrapper::DEV9Wrapper()
 
 	mDEV9irqCallback = nat_R->GetDEV9Method("DEV9irqCallback");
 	m_DEV9irqHandler = nat_R->GetDEV9Method("_DEV9irqHandler");
+	mDEV9async = nat_R->GetDEV9Method("DEV9async");
 
 	mSetSettingsDir = nat_R->GetDEV9Method("SetSettingsDir");
 	mSetLogDir = nat_R->GetDEV9Method("SetLogDir");
@@ -142,6 +143,11 @@ DEV9handler DEV9Wrapper::DEV9irqHandler(void) //this dosn't work
 	System::IntPtr ip = Marshal::GetFunctionPointerForDelegate(fp);
 	DEV9handler dev9H = static_cast<DEV9handler>(ip.ToPointer());
 	return dev9H;
+}
+
+void DEV9Wrapper::DEV9async(u32 cycles)
+{
+	mDEV9async->Invoke(cPlugin, gcnew array < System::Object^ > {cycles});
 }
 
 int DEV9Wrapper::_DEV9irqHandler(void)

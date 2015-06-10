@@ -44,9 +44,10 @@ EXPORTS
 	DEV9writeDMA8Mem    @36
 	DEV9irqCallback     @40
 	DEV9irqHandler      @41
-	DEV9configure       @42
-	DEV9test            @43
-	DEV9about           @44
+	DEV9async           @42
+	DEV9configure       @43
+	DEV9test            @44
+	DEV9about           @45
 	; freeze
-	DEV9setSettingsDir  @46
-	DEV9setLogDir       @47
+	DEV9setSettingsDir  @47
+	DEV9setLogDir       @48

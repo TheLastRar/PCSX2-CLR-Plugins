@@ -130,6 +130,11 @@ EXPORT_C_(void) DEV9irqCallback(DEV9callback callback)
 	nat_dev9->DEV9wrap->DEV9irqCallback(callback);
 }
 
+EXPORT_C_(void) DEV9async(u32 cycles)
+{
+	nat_dev9->DEV9wrap->DEV9async(cycles);
+}
+
 EXPORT_C_(void) DEV9readDMA8Mem(u32 *pMem, int size)
 {
 	nat_dev9->DEV9wrap->DEV9readDMA8Mem(pMem, size);
