@@ -49,5 +49,5 @@ EXPORTS
 	DEV9test            @44
 	DEV9about           @45
 	; freeze
-	DEV9setSettingsDir  @47
-	DEV9setLogDir       @48
+	DEV9setSettingsDir  @46
+	DEV9setLogDir       @47

@@ -175,6 +175,20 @@ namespace CLRDEV9.Sessions
                 }
             }
 
+            if (tcp.RST == true) //Test this
+            {
+                if (client.Connected)
+                { 
+                    lock(sentry)
+                    {
+                        client.Close();
+                    }
+                    state = TCPState.Closed;
+                    open = false;
+                    return true;
+                }
+            }
+
             switch (state)
             {
                 case TCPState.None:
@@ -218,7 +232,7 @@ namespace CLRDEV9.Sessions
                                 Console.Error.WriteLine("Got Unknown Option " + tcp.Options[i].Code);
                                 throw new Exception();
                             //break;
-                        }   
+                        }
                     }
 
                     client = new TcpClient();

@@ -419,7 +419,10 @@ Namespace OHCI
         End Function
 
         '/* Read/Write the contents of a TD from/to main memory. */
-        Private Sub copy_td(ByVal td As ohci_td, ByRef buf As Byte(), ByVal len As Integer, write As Boolean)
+        'Only return false on memory error
+        'This function skips the read/put_word/dword functions
+        'So we have to fo read checks ourself.
+        Private Function copy_td(ByVal td As ohci_td, ByRef buf As Byte(), ByVal len As Integer, write As Boolean) As Boolean
             Dim ptr, n As UInt32
 
             ptr = td.cbp
@@ -427,12 +430,21 @@ Namespace OHCI
             If (n > len) Then
                 n = CUInt(len)
             End If
+            'OutOfBounds Check 1 (with ptr = td.cbp)
+            If (ptr + n > IOPMEMSIZE) Then
+                Return False
+            End If
             cpu_physical_memory_rw(ptr, buf, CInt(n), write)
             If (n = len) Then
-                Return
+                Return True
             End If
 
             ptr = td.be And Not (&HFFFUI)
+            'OutOfBounds Check 2 (with ptr = td.be)
+            If (ptr + (len - n) > IOPMEMSIZE) Then
+                Return False
+            End If
+
             'buf += n; 'we have an offset of n, but cpu_physical_memory_rw dosn't take an offset
             Dim buf2(CInt(len - n - 1)) As Byte
 
@@ -442,10 +454,10 @@ Namespace OHCI
             cpu_physical_memory_rw(ptr, buf2, CInt(len - n), write)
             'copy buf2 back into buf
             memcpy(buf, CInt(n), buf2, 0, CInt(len - n))
-            Return
+            Return True
 
             '}
-        End Sub
+        End Function
 
         '/* Read/Write the contents of an ISO TD from/to main memory. */
         Private Sub copy_iso_td(ByVal start_addr As UInt32, ByVal end_addr As UInt32, ByRef buf As Byte(), len As Integer, write As Boolean)
@@ -751,7 +763,12 @@ Namespace OHCI
                 End If
 
                 If (len <> 0 AndAlso dir <> OHCI_TD_DIR_IN) Then
-                    copy_td(td, buf, CInt(len), False)
+                    'OutOfBounds Check added in
+                    If Not (copy_td(td, buf, CInt(len), False)) Then
+                        USBLog.ErrorWriteLine("usb-ohci: Copy TD read error at td.cbp " & td.cbp.ToString("X") & ", td.be at" & td.be.ToString("X"))
+                        die()
+                        Return False 'return 0;
+                    End If
                 End If
             End If
 
@@ -773,7 +790,12 @@ Namespace OHCI
 
             If (ret >= 0) Then
                 If (dir = OHCI_TD_DIR_IN) Then
-                    copy_td(td, buf, ret, True)
+                    'OutOfBounds Check added in
+                    If Not (copy_td(td, buf, ret, True)) Then
+                        USBLog.ErrorWriteLine("usb-ohci: Copy TD write error at td.cbp " & td.cbp.ToString("X") & ", td.be at" & td.be.ToString("X"))
+                        die()
+                        Return False 'return 0;
+                    End If
                 Else
                     ret = CInt(len)
                 End If
