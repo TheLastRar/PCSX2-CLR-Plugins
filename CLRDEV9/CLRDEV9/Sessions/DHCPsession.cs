@@ -38,9 +38,7 @@ namespace CLRDEV9.Sessions
         {
             #region "Get Network Info"
             //Get comp IP
-            IPAddress IPaddress =
-                Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip =>
-                ip.AddressFamily == AddressFamily.InterNetwork);//.ToString(); //For Ipv4
+            IPAddress IPaddress = null;
 
             //IPAddress NetMask = null;
             //IPAddress GatewayIP = null;
@@ -56,44 +54,49 @@ namespace CLRDEV9.Sessions
                 {
                     continue;
                 }
-                UnicastIPAddressInformationCollection IPInfo = adapter.GetIPProperties().UnicastAddresses;
-                IPInterfaceProperties properties = adapter.GetIPProperties();
-                //GatewayIPAddressInformationCollection myGateways = properties.GatewayAddresses;
-                foreach (UnicastIPAddressInformation IPAddressInfo in IPInfo)
+                if (adapter.OperationalStatus == OperationalStatus.Up)
                 {
-                    if (IPAddress.Equals(IPaddress, IPAddressInfo.Address))
+                    UnicastIPAddressInformationCollection IPInfo = adapter.GetIPProperties().UnicastAddresses;
+                    IPInterfaceProperties properties = adapter.GetIPProperties();
+                    //GatewayIPAddressInformationCollection myGateways = properties.GatewayAddresses;
+                    foreach (UnicastIPAddressInformation IPAddressInfo in IPInfo)
                     {
-                        Console.Error.WriteLine("Matched Adapter");
-                        //NetMask = IPAddressInfo.IPv4Mask;
-                        FoundAdapter = true;
-                        break;
-                    }
-                }
-                //foreach (GatewayIPAddressInformation Gateway in myGateways) //allow more than one gateway?
-                //{
-                //    if (FoundAdapter == true)
-                //    {
-                //        GatewayIP = Gateway.Address;
-                //        GATEWAY_IP = GatewayIP.GetAddressBytes();
-                //        break;
-                //    }
-                //}
-                foreach (IPAddress DNSaddress in properties.DnsAddresses) //allow more than one DNS address?
-                {
-                    if (FoundAdapter == true)
-                    {
-                        if (!(DNSaddress.AddressFamily == AddressFamily.InterNetworkV6))
+                        if (IPAddressInfo.DuplicateAddressDetectionState == DuplicateAddressDetectionState.Preferred &
+                            IPAddressInfo.AddressPreferredLifetime != UInt32.MaxValue &
+                            IPAddressInfo.Address.AddressFamily == AddressFamily.InterNetwork)
                         {
-                            DNS_IP.Add(DNSaddress);
+                            Console.Error.WriteLine("Matched Adapter");
+                            IPaddress = IPAddressInfo.Address; ;
+                            FoundAdapter = true;
+                            break;
+                        }
+                    }
+                    //foreach (GatewayIPAddressInformation Gateway in myGateways) //allow more than one gateway?
+                    //{
+                    //    if (FoundAdapter == true)
+                    //    {
+                    //        GatewayIP = Gateway.Address;
+                    //        GATEWAY_IP = GatewayIP.GetAddressBytes();
+                    //        break;
+                    //    }
+                    //}
+                    foreach (IPAddress DNSaddress in properties.DnsAddresses) //allow more than one DNS address?
+                    {
+                        if (FoundAdapter == true)
+                        {
+                            if (!(DNSaddress.AddressFamily == AddressFamily.InterNetworkV6))
+                            {
+                                DNS_IP.Add(DNSaddress);
+                            }
                         }
                     }
                 }
                 if (FoundAdapter == true)
                 {
-                    //Console.Error.WriteLine(adapter.Name);
-                    //Console.Error.WriteLine(adapter.Description);
-                    //Console.Error.WriteLine("IP Address :" + IPaddress.ToString());
-                    //Console.Error.WriteLine("Domain Name :" + Dns.GetHostName());
+                    Console.Error.WriteLine(adapter.Name);
+                    Console.Error.WriteLine(adapter.Description);
+                    Console.Error.WriteLine("IP Address :" + IPaddress.ToString());
+                    Console.Error.WriteLine("Domain Name :" + Dns.GetHostName());
                     //Console.Error.WriteLine("Subnet Mask :" + NetMask.ToString());
                     //Console.Error.WriteLine("Gateway IP :" + GatewayIP.ToString());
                     Console.Error.WriteLine("DNS 1 : " + DNS_IP[0].ToString());
