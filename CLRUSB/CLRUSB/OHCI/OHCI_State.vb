@@ -765,7 +765,7 @@ Namespace OHCI
                 If (len <> 0 AndAlso dir <> OHCI_TD_DIR_IN) Then
                     'OutOfBounds Check added in
                     If Not (copy_td(td, buf, CInt(len), False)) Then
-                        USBLog.ErrorWriteLine("usb-ohci: Copy TD read error at td.cbp " & td.cbp.ToString("X") & ", td.be at" & td.be.ToString("X"))
+                        USBLog.ErrorWriteLine("usb-ohci: Copy TD read error at td.cbp " & td.cbp.ToString("X") & ", td.be at " & td.be.ToString("X"))
                         die()
                         Return False 'return 0;
                     End If
