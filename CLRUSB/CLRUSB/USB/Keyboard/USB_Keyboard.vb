@@ -420,9 +420,9 @@ Namespace USB.Keyboard
                 If KeysPressed.Contains(Keys.RControlKey) Then
                     CaptureKeyboard = Not CaptureKeyboard
                     If CaptureKeyboard Then
-                        log.ErrorWriteLine("Keybaord Capture Enabled")
+                        log.ErrorWriteLine("Keyboard Capture Enabled")
                     Else
-                        log.ErrorWriteLine("Keybaord Capture Disabled")
+                        log.ErrorWriteLine("Keyboard Capture Disabled")
                     End If
                     KeysPressed.Remove(Keys.RControlKey)
                 End If
